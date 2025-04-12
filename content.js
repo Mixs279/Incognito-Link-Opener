@@ -1,13 +1,13 @@
-(function() {
-	let incognitoModeActive = false;
-	let indicator = null;
-	const keysPressed = new Set();
+(function () {
+    let incognitoModeActive = false;
+    let indicator = null;
+    const keysPressed = new Set();
 
-	(function injectStyles() {
-		if (!document.getElementById('incognito-indicator-style')) {
-			const style = document.createElement('style');
-			style.id = 'incognito-indicator-style';
-			style.textContent = `
+    (function injectStyles() {
+        if (!document.getElementById('incognito-indicator-style')) {
+            const style = document.createElement('style');
+            style.id = 'incognito-indicator-style';
+            style.textContent = `
 @keyframes gradient {
     0% {
         background-position: 0% 50%;
@@ -50,88 +50,88 @@
     opacity: 1;
 }
       `;
-			document.head.appendChild(style);
-		}
-	})();
+            document.head.appendChild(style);
+        }
+    })();
 
-	function showIndicator() {
-		if (!indicator) {
-			indicator = document.createElement('div');
-			indicator.classList.add('incognito-indicator');
-			indicator.innerText = "Incognito Shortcut Active";
-			document.body.appendChild(indicator);
+    function showIndicator() {
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.classList.add('incognito-indicator');
+            indicator.innerText = "Incognito Shortcut Active";
+            document.body.appendChild(indicator);
 
-			requestAnimationFrame(() => {
-				indicator.classList.add('visible');
-			});
-		}
-	}
+            requestAnimationFrame(() => {
+                indicator.classList.add('visible');
+            });
+        }
+    }
 
-	function hideIndicator() {
-		if (indicator) {
-			indicator.classList.remove('visible');
-			indicator.addEventListener('transitionend', function handler() {
-				indicator.removeEventListener('transitionend', handler);
-				if (indicator && !indicator.classList.contains('visible')) {
-					indicator.remove();
-					indicator = null;
-				}
-			});
-		}
-	}
+    function hideIndicator() {
+        if (indicator) {
+            indicator.classList.remove('visible');
+            indicator.addEventListener('transitionend', function handler() {
+                indicator.removeEventListener('transitionend', handler);
+                if (indicator && !indicator.classList.contains('visible')) {
+                    indicator.remove();
+                    indicator = null;
+                }
+            });
+        }
+    }
 
-	function resetShortcut() {
-		keysPressed.clear();
-		if (incognitoModeActive) {
-			incognitoModeActive = false;
-			hideIndicator();
-		}
-	}
+    function resetShortcut() {
+        keysPressed.clear();
+        if (incognitoModeActive) {
+            incognitoModeActive = false;
+            hideIndicator();
+        }
+    }
 
-	document.addEventListener('visibilitychange', () => {
-		if (document.hidden) {
-			resetShortcut();
-		}
-	});
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            resetShortcut();
+        }
+    });
 
-	window.addEventListener('blur', () => {
-		resetShortcut();
-	});
+    window.addEventListener('blur', () => {
+        resetShortcut();
+    });
 
-	document.addEventListener('keydown', (e) => {
-		keysPressed.add(e.key);
-		if (keysPressed.has('Shift') && keysPressed.has('Alt')) {
-			if (!incognitoModeActive) {
-				incognitoModeActive = true;
-				showIndicator();
-			}
-			e.stopPropagation();
-			e.preventDefault();
-		}
-	}, true);
+    document.addEventListener('keydown', (e) => {
+        keysPressed.add(e.key);
+        if (keysPressed.has('Shift') && keysPressed.has('Alt')) {
+            if (!incognitoModeActive) {
+                incognitoModeActive = true;
+                showIndicator();
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    }, true);
 
-	document.addEventListener('keyup', (e) => {
-		keysPressed.delete(e.key);
-		if (!(keysPressed.has('Shift') && keysPressed.has('Alt'))) {
-			if (incognitoModeActive) {
-				incognitoModeActive = false;
-				hideIndicator();
-			}
-		}
-	}, true);
+    document.addEventListener('keyup', (e) => {
+        keysPressed.delete(e.key);
+        if (!(keysPressed.has('Shift') && keysPressed.has('Alt'))) {
+            if (incognitoModeActive) {
+                incognitoModeActive = false;
+                hideIndicator();
+            }
+        }
+    }, true);
 
-	document.addEventListener('click', (e) => {
-		if (incognitoModeActive) {
-			let target = e.target;
-			let link = target.closest('a');
-			if (link && link.href) {
-				e.preventDefault();
-				e.stopPropagation();
-				chrome.runtime.sendMessage({
-					action: 'openInIncognito',
-					url: link.href
-				});
-			}
-		}
-	}, true);
+    document.addEventListener('click', (e) => {
+        if (incognitoModeActive) {
+            let target = e.target;
+            let link = target.closest('a');
+            if (link && link.href) {
+                e.preventDefault();
+                e.stopPropagation();
+                chrome.runtime.sendMessage({
+                    action: 'openInIncognito',
+                    url: link.href
+                });
+            }
+        }
+    }, true);
 })();
