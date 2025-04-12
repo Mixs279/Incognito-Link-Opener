@@ -1,31 +1,31 @@
 {
-  "manifest_version": 3,
-  "name": "Incognito Link Opener",
-  "version": "1.0",
-  "description": "Opens clicked links in Incognito Mode when Shift + Alt is held.",
-  "icons": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-  },
-  "permissions": [
-      "tabs",
-      "scripting",
-      "activeTab",
-      "windows"
-  ],
-  "background": {
-      "service_worker": "background.js"
-  },
-  "content_scripts": [
-      {
-          "matches": [
-              "<all_urls>"
-          ],
-          "js": [
-              "content.js"
-          ]
-      }
-  ],
-  "incognito": "spanning"
+    "manifest_version": 3,
+    "name": "Incognito Link Opener",
+    "version": "1.0",
+    "description": "Opens clicked links in Incognito Mode when Shift + Alt is held.",
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "tabs",
+        "scripting",
+        "activeTab",
+        "windows"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "incognito": "spanning"
 }
