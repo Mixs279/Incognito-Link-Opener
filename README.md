@@ -21,7 +21,7 @@ To install the Incognito Link Opener extension, follow these steps:
    ```bash
    git clone https://github.com/Mixs279/Incognito-Link-Opener.git
    ```
-   Alternatively, download the ZIP archive and extract the files.
+   Alternatively, [download the ZIP](https://github.com/Mixs279/Incognito-Link-Opener/archive/refs/heads/main.zip) archive and extract the files.
 
 2. **Load the Extension in Chrome:**
    - Open Google Chrome and navigate to `chrome://extensions/`.
